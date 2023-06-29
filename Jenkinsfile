@@ -5,7 +5,7 @@ pipeline {
         stage('Sonar Analysis') {
             steps {
                 echo 'Testing..'
-                sh 'cd webapp && sudo docker run  --rm -e SONAR_HOST_URL="http://13.53.76.240:9000" -e SONAR_LOGIN="sqp_8ac5574d91d726c1218cbd684df95164453a60c7"  -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms'
+                sh 'cd webapp && sudo docker run  --rm -e SONAR_HOST_URL="http://16.16.142.29:9000" -e SONAR_LOGIN="sqp_931bd3bb75434b8199e81b865c2b1811fe4dca49"  -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms'
 
             }
         }
@@ -25,7 +25,7 @@ pipeline {
                     def packageJSONVersion = packageJSON.version
                     echo "${packageJSONVersion}"  
                     sh "zip webapp/dist-${packageJSONVersion}.zip -r webapp/dist"
-                    sh "curl -v -u admin:Hari@79934 --upload-file webapp/dist-${packageJSONVersion}.zip http://13.53.76.240:8081/repository/lms/"     
+                    sh "curl -v -u admin:Hari@79934 --upload-file webapp/dist-${packageJSONVersion}.zip http://16.16.142.29:8081/repository/lms/"     
             }
             }
         }
@@ -37,7 +37,7 @@ pipeline {
                     def packageJSON = readJSON file: 'webapp/package.json'
                     def packageJSONVersion = packageJSON.version
                     echo "${packageJSONVersion}"  
-                    sh "curl -u admin:Hari@79934 -X GET \'http://13.53.76.240:8081/repository/lms/dist-${packageJSONVersion}.zip\' --output dist-'${packageJSONVersion}'.zip"
+                    sh "curl -u admin:Hari@79934 -X GET \'http://16.16.142.29:8081/repository/lms/dist-${packageJSONVersion}.zip\' --output dist-'${packageJSONVersion}'.zip"
                     sh 'sudo rm -rf /var/www/html/*'
                     sh "sudo unzip -o dist-'${packageJSONVersion}'.zip"
                     sh "sudo cp -r webapp/dist/* /var/www/html"
